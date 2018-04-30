@@ -78,8 +78,8 @@
 		//applyPluginsAsyncWaterfall(和applyPluginsAsyncSeries类似，只不过插件回调参数只能是两个)
 		tap.plugin('testAsyncWaterfall',function(a,cb){
 			console.log('testAsyncWaterfall1',a);
-			//执行了回调后才会接着执行接下来的插件
-			cb();
+			//执行了回调后才会接着执行接下来的插件，第一个必须为false，第二值用来传递给下个插件
+			cb(null,'value');
 		})
 		tap.plugin('testAsyncWaterfall',function(a,cb){
 			console.log('testAsyncWaterfall2',a);
