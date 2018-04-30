@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>tapable-demo</title>
+	<script type="text/javascript" src="./Tapable.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		var tap = new Tapable();
+
+		//applyPlugins
+		tap.plugin('test',function(a,b){
+			console.log('test1',a,b);
+		})
+		tap.plugin('test',function(a,b){
+			console.log('test2',a,b);
+		})
+		tap.applyPlugins('test','arg1','arg2');
+
+		//applyPluginsWaterfall
+		tap.plugin('testWaterfall',function(a,b){
+			console.log('testWaterfall1',a,b);
+			//返回值作为下一个插件的第一个返回值
+			return 1;
+		})
+		tap.plugin('testWaterfall',function(a,b){
+			console.log('testWaterfall2',a,b);
+		})
+		tap.applyPluginsWaterfall('testWaterfall','arg1','arg2');
+
+		//applyPluginsBailResult
+		tap.plugin('testBail',function(a,b){
+			console.log('testBail1',a,b);
+			//返回值不为undefined，其后的插件将不再执行
+			return 1;
+		})
+		tap.plugin('testBail',function(a,b){
+			console.log('testBail2',a,b);
+		})
+		tap.applyPluginsBailResult('testBail','arg1','arg2');
+
+		//applyPluginsAsyncSeries
+		tap.plugin('testAsyncSeries',function(a,b,cb){
+			console.log('testAsyncSeries1',a,b);
+			//执行了回调后才会接着执行接下来的插件
+			cb();
+		})
+		tap.plugin('testAsyncSeries',function(a,b,cb){
+			console.log('testAsyncSeries2',a,b);
+			//回调参数不为空，将不再继续执行
+			cb(1);
+		})
+		tap.plugin('testAsyncSeries',function(a,b,cb){
+			console.log('testAsyncSeries3',a,b);
+		})
+		tap.applyPluginsAsyncSeries('testAsyncSeries','arg1','arg2',function(...arg){
+			console.log('testAsyncSeriesCb',...arg);
+		})
+
+		//applyPluginsAsyncSeriesBailResult(和applyPluginsAsyncSeries类似，只是回调停止继续执行的判断条件不同)
+		tap.plugin('testAsyncSeriesBailResult',function(a,b,cb){
+			console.log('testAsyncSeriesBailResult1',a,b);
+			//执行了回调后才会接着执行接下来的插件
+			cb();
+		})
+		tap.plugin('testAsyncSeriesBailResult',function(a,b,cb){
+			console.log('testAsyncSeriesBailResult2',a,b);
+			//回调参数个数大于0，将不再继续执行
+			cb(null);
+		})
+		tap.plugin('testAsyncSeriesBailResult',function(a,b,cb){
+			console.log('testAsyncSeriesBailResult3',a,b);
+		})
+		tap.applyPluginsAsyncSeriesBailResult('testAsyncSeriesBailResult','arg1','arg2',function(...arg){
+			console.log('testAsyncSeriesBailResultCb',...arg);
+		})
+
+		//applyPluginsAsyncWaterfall(和applyPluginsAsyncSeries类似，只不过插件回调参数只能是两个)
+		tap.plugin('testAsyncWaterfall',function(a,cb){
+			console.log('testAsyncWaterfall1',a);
+			//执行了回调后才会接着执行接下来的插件
+			cb();
+		})
+		tap.plugin('testAsyncWaterfall',function(a,cb){
+			console.log('testAsyncWaterfall2',a);
+			//回调参数不为空，将不再继续执行
+			cb(1);
+		})
+		tap.plugin('testAsyncWaterfall',function(a,cb){
+			console.log('testAsyncWaterfall3',a);
+		})
+		tap.applyPluginsAsyncWaterfall('testAsyncWaterfall','arg1',function(...arg){
+			console.log('testAsyncWaterfallCb',...arg);
+		})
+	</script>
+</body>
+</html>
