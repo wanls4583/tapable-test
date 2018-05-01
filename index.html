@@ -32,7 +32,7 @@
 		tap.plugin('testBail',function(a,b){
 			console.log('testBail1',a,b);
 			//返回值不为undefined，其后的插件将不再执行
-			return 1;
+			return null;
 		})
 		tap.plugin('testBail',function(a,b){
 			console.log('testBail2',a,b);
@@ -91,6 +91,44 @@
 		})
 		tap.applyPluginsAsyncWaterfall('testAsyncWaterfall','arg1',function(...arg){
 			console.log('testAsyncWaterfallCb',...arg);
+		})
+
+		//applyPluginsParallel(和applyPluginsAsyncSeries类似)
+		tap.plugin('testParallel',function(a,b,cb){
+			console.log('testParallel1',a,b);
+			//执行了回调后才会接着执行接下来的插件，第一个必须为false
+			cb(null,'value');
+		})
+		tap.plugin('testParallel',function(a,b,cb){
+			console.log('testParallel2',a,b);
+			//回调参数不为空，将不再继续执行
+			cb(1);
+		})
+		tap.plugin('testParallel',function(a,b,cb){
+			console.log('testParallel3',a,b);
+		})
+		tap.applyPluginsParallel('testParallel','arg1','arg2',function(...arg){
+			console.log('testParallelCb',...arg);
+		})
+
+		//applyPluginsParallelBailResult
+		tap.plugin('testParallelBailResult',function(a,b,cb){
+			console.log('testParallelBailResult1',a,b);
+			//回调函数只有第一次执行,并且参数个数要大于0
+			setTimeout(function(){
+				cb(null,'value');
+			},100)
+		})
+		tap.plugin('testParallelBailResult',function(a,b,cb){
+			console.log('testParallelBailResult2',a,b);
+			//回调参数不为空，将不再继续执行
+			cb(1);
+		})
+		tap.plugin('testParallelBailResult',function(a,b,cb){
+			console.log('testParallelBailResult3',a,b);
+		})
+		tap.applyPluginsParallelBailResult('testParallelBailResult','arg1','arg2',function(...arg){
+			console.log('testParallelBailResultCb',...arg);
 		})
 	</script>
 </body>
