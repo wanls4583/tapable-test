@@ -16,7 +16,7 @@
 			console.log('test2',a,b);
 		})
 		tap.applyPlugins('test','arg1','arg2');
-
+		console.log('-----------------------');
 		//applyPluginsWaterfall：依次执行插件，前一个插件的返回值将作为下一个插件的参数
 		tap.plugin('testWaterfall',function(a,b){
 			console.log('testWaterfall1',a,b);
@@ -27,7 +27,7 @@
 			console.log('testWaterfall2',a,b);
 		})
 		tap.applyPluginsWaterfall('testWaterfall','arg1','arg2');
-
+		console.log('-----------------------');
 		//applyPluginsBailResult(依次执行插件，当插件返回值不为undefined时，停止执行之后的插件)
 		tap.plugin('testBailResult',function(a,b){
 			console.log('testBailResult1',a,b);
@@ -38,7 +38,7 @@
 			console.log('testBailResult2',a,b);
 		})
 		tap.applyPluginsBailResult('testBailResult','arg1','arg2');
-
+		console.log('-----------------------');
 		//applyPluginsAsyncSeries：异步的执行插件，后一个插件只有在前一个插件执行回调后才会开始执行，如果有一个插件回调的参数不为false，则将停止执行其后的插件
 		tap.plugin('testAsyncSeries',function(a,b,cb){
 			console.log('testAsyncSeries1',a,b);
@@ -56,7 +56,7 @@
 		tap.applyPluginsAsyncSeries('testAsyncSeries','arg1','arg2',function(...arg){
 			console.log('testAsyncSeriesCb',...arg);
 		})
-
+		console.log('-----------------------');
 		//applyPluginsAsyncSeriesBailResult：和applyPluginsAsyncSeries类似，只是回调停止继续执行的判断条件不同
 		tap.plugin('testAsyncSeriesBailResult',function(a,b,cb){
 			console.log('testAsyncSeriesBailResult1',a,b);
@@ -74,7 +74,7 @@
 		tap.applyPluginsAsyncSeriesBailResult('testAsyncSeriesBailResult','arg1','arg2',function(...arg){
 			console.log('testAsyncSeriesBailResultCb',...arg);
 		})
-
+		console.log('-----------------------');
 		//applyPluginsAsyncWaterfall：和applyPluginsAsyncSeries类似，只不过插件回调参数只能是两个
 		tap.plugin('testAsyncWaterfall',function(a,cb){
 			console.log('testAsyncWaterfall1',a);
@@ -92,7 +92,7 @@
 		tap.applyPluginsAsyncWaterfall('testAsyncWaterfall','arg1',function(...arg){
 			console.log('testAsyncWaterfallCb',...arg);
 		})
-
+		console.log('-----------------------');
 		//applyPluginsParallel：通过for循环并行的执行所有插件，如果某个插件执行了回调且回调参数不为false，则其后所有未执行的插件将不再执行。可能存在插件异步调用了回调，这时候后面的插件可能已经执行了
 		tap.plugin('testParallel',function(a,b,cb){
 			console.log('testParallel1',a,b);
@@ -112,7 +112,7 @@
 		tap.applyPluginsParallel('testParallel','arg1','arg2',function(...arg){
 			console.log('testParallelCb',...arg);
 		})
-
+		console.log('-----------------------');
 		//applyPluginsParallelBailResult：通过for循环执行所有插件，只有第一个插件的回调能执行
 		tap.plugin('testParallelBailResult',function(a,b,cb){
 			console.log('testParallelBailResult1',a,b);
